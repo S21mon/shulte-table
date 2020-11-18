@@ -1,0 +1,208 @@
+html {
+  font-family: "Nunito", sans-serif;
+  font-size: 62.5%;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+body {
+  background-color: #cbddfc;
+}
+
+.header {
+  min-height: 5rem;
+  background-color: #094d74;
+}
+
+.header__title {
+  color: #eef0f6;
+  font-size: 3.5rem;
+  text-align: center;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.header a,
+.header a:link,
+.header a:visited,
+.header a:active,
+.header a:hover {
+  text-decoration: none;
+  color: #eef0f6;
+}
+
+.container {
+  max-width: 60vw;
+  margin: 0 auto;
+}
+
+.options {
+  min-height: 3rem;
+  margin-top: 5rem;
+}
+
+.game-buttons {
+  display: flex;
+  justify-content: space-between;
+  max-width: 25rem;
+  margin: 0 auto;
+}
+
+.game-buttons__item {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  font-size: 1.7rem;
+  color: #eef0f6;
+  border: #759cd8 solid 1rem;
+  background-color: #759cd8;
+  border-radius: 1.4rem;
+  cursor: pointer;
+}
+
+.game-buttons__item:hover {
+  border: #5e87bf solid 1rem;
+  background-color: #5e87bf;
+  transition: 0.3s;
+}
+
+.game-buttons__item:active {
+  background: #cbddfc;
+  border: 1rem solid #cbddfc;
+  transition: 0.3s;
+}
+
+.timer {
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.timer__description + .timer__value {
+  margin-left: 1rem;
+}
+
+.timer__description,
+.timer__value {
+  font-size: 1.7rem;
+  color: #094d74;
+}
+
+.timer__description {
+  font-weight: 900;
+}
+
+.shulte {
+  margin-top: 1rem;
+  min-height: 60rem;
+  background-color: #cbddfc;
+  display: flex;
+  justify-content: center;
+}
+
+.shulte__current-number {
+  color: #1b1e21;
+  font-size: 20rem;
+  padding-top: 10rem;
+}
+
+.shulte__current-number_left {
+  padding-left: 3rem;
+}
+
+.shulte__current-number_right {
+  padding-right: 3rem;
+}
+
+.shulte__table {
+  margin: 0 auto;
+  font-size: 5rem;
+  color: #1b1e21;
+  border-spacing: 0;
+}
+
+.shulte__table td {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.shulte__table td {
+  text-align: center;
+  height: 10rem;
+  min-width: 10rem;
+}
+
+.shulte__table td:hover {
+  background-color: #759cd8;
+}
+
+.shulte__table td:active {
+  background-color: #fff;
+  transition: 0.2s;
+}
+
+.shulte__table tr:first-child td {
+  border: #1b1e21 solid 0.15rem;
+  border-right: none;
+}
+
+.shulte__table tr:first-child td:last-child {
+  border-right: #1b1e21 solid 0.15rem;
+}
+
+.shulte__table tr td {
+  border: #1b1e21 solid 0.15rem;
+  border-right: none;
+  border-top: none;
+}
+
+.shulte__table tr td:last-child {
+  border-right: #1b1e21 solid 0.15rem;
+}
+
+.congratulations {
+  text-align: center;
+}
+
+.congratulations__title {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #094d74;
+}
+
+.congratulations__text {
+  font-size: 2rem;
+  font-weight: 500;
+  color: #1b1e21;
+}
+
+.footer {
+  margin-top: 3rem;
+  min-height: 20rem;
+  background-color: #161d2b;
+  padding-top: 15rem;
+}
+
+.footer hr {
+  min-height: 0.15rem;
+  background-color: #eef0f6;
+}
+
+.footer__copyright {
+  padding-top: 1rem;
+  text-align: center;
+  color: #eef0f6;
+  font-size: 1.7rem;
+}
+
