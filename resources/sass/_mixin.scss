@@ -1,0 +1,25 @@
+@mixin underline {
+    content: "";
+    position: absolute;
+    height: 2px;
+    background-color: #3490dc;
+    width: 0;
+    left: 50%;
+    bottom: 0;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+    -webkit-transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) all;
+    transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) all;
+}
+
+@mixin button {
+    padding: 1.5rem 3.3rem;
+    border-radius: 3.2rem;
+    font-size: 2rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all .5s;
+    color: #eef0f6;
+    background-color: #094d74;
+}

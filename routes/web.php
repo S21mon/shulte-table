@@ -16,3 +16,20 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('index');
 })->name('home');
+
+Route::get('/user/login', function () {
+    return view('auth/login');
+});
+
+Route::get('/user/register', function () {
+    return view('auth/register');
+});
+
+
+Auth::routes();
+
+/*Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('{any}', function () {
+    return view('index');
+})->where('any', '.*');*/

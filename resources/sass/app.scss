@@ -1,205 +1,60 @@
-$textColor: #eef0f6;
-$headerColor: #094d74;
-$backgroundColor: #cbddfc;
-$footerColor: #161d2b;
-$btnColor: #759cd8;
-$focusColor: #5e87bf;
-$numberColor: #1b1e21;
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
 
 html {
-    font-family: "Nunito", sans-serif;
     font-size: 62.5%;
+    word-spacing: 1px;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
 }
 
-* {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
-    padding: 0;
-    border: 0;
 }
 
-body {
-    background-color: $backgroundColor;
+hr {
+    background-color: white;
 }
 
 .header {
-    min-height: 5rem;
-    background-color: $headerColor;
-    &__title {
-        color: $textColor;
-        font-size: 3.5rem;
-        text-align: center;
-        cursor: pointer;
-        user-select: none;
+    min-height: 15rem;
+    background-color: #094d74;
+
+    &__link {
+        font-size: 7rem;
+        color: #eef0f6;
     }
-    & a, & a:link, & a:visited, & a:active, & a:hover {
+
+    &__link:hover {
         text-decoration: none;
-        color: $textColor;
-    }
-
-}
-
-.container {
-    max-width: 60vw;
-    margin: 0 auto;
-}
-
-.options {
-    min-height: 3rem;
-    margin-top: 5rem;
-}
-
-.game-buttons {
-    display: flex;
-    justify-content: space-between;
-    max-width: 25rem;
-    margin: 0 auto;
-    &__item {
-        user-select: none;
-        font-size: 1.7rem;
-        color: $textColor;
-        border: $btnColor solid 1rem;
-        background-color: $btnColor;
-        border-radius: 1.4rem;
-        cursor: pointer;
-    }
-
-    &__item:hover {
-        border: $focusColor solid 1rem;
-        background-color: $focusColor;
-        //font-size: 1.9rem;
-        transition: .3s;
-    }
-
-    &__item:active {
-        background: $backgroundColor;
-        border: 1rem solid $backgroundColor;
-        transition: .3s;
-    }
-
-}
-
-.timer {
-    margin-top: 4rem;
-    display: flex;
-    justify-content: center;
-    &__description + &__value {
-        margin-left: 1rem;
-    }
-
-    &__description, &__value {
-        font-size: 1.7rem;
-        //color: #1f4b8e;
-        color: $headerColor;
-    }
-    &__description {
-        font-weight: 900;
+        color: $white;
     }
 }
 
-.shulte {
-    margin-top: 1rem;
-    min-height: 60rem;
-    background-color: $backgroundColor;
-    display: flex;
-    justify-content: center;
-
-    &__current-number {
-        color: $numberColor;
-        font-size: 20rem;
-        padding-top: 10rem;
-        &_left {
-            padding-left: 3rem;
-        }
-        &_right {
-            padding-right: 3rem;
-        }
-    }
-
-    &__table {
-        margin: 0 auto;
-        font-size: 5rem;
-        color: $numberColor;
-        border-spacing: 0;
-    }
-
-    &__table {
-        & td {
-            user-select: none;
-        }
-
-        & td {
-            text-align: center;
-            height: 10rem;
-            min-width: 10rem;
-        }
-        & td:hover {
-            background-color: $btnColor;
-        }
-
-        & td:active {
-            background-color: #fff;
-            transition: .2s;
-        }
-
-        & tr:first-child {
-            & td {
-                border: $numberColor solid .15rem;
-                border-right: none;
-            }
-            & td:last-child {
-                border-right: $numberColor solid .15rem;
-            }
-        }
-
-        & tr {
-            & td {
-                border: $numberColor solid .15rem;
-                border-right: none;
-                border-top: none;
-            }
-            & td:last-child {
-                border-right: $numberColor solid .15rem;
-            }
-        }
-    }
-
-    &__table tr:nth-child(1) td:first-child,  {
-
-    }
-}
-
-.congratulations {
-    text-align: center;
-
-    &__title {
-        font-size: 3rem;
-        font-weight: 900;
-        color: $headerColor;
-    }
-
-    &__text {
-        font-size: 2rem;
-        font-weight: 500;
-        color: $numberColor;
-    }
+.title {
+    padding-top: 2rem;
 }
 
 .footer {
-    margin-top: 3rem;
-    min-height: 20rem;
-    background-color: $footerColor;
-    padding-top: 15rem;
-    & hr {
-        min-height: .15rem;
-        background-color: $textColor;
-    }
+    min-height: 25rem;
+    padding-top: 10rem;
+    background-color: #161d2b;
 
     &__copyright {
-        padding-top: 1rem;
-        text-align: center;
-        color: $textColor;
-        font-size: 1.7rem;
+        padding-top: 3rem;
+        font-size: 3rem;
+        color: #eef0f6;
     }
 }
-
