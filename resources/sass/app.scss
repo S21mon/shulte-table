@@ -1,11 +1,9 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
-// Variables
-@import 'variables';
+@import './_variables.scss';
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+//@import 'bootstrap';
 
 html {
     font-size: 62.5%;
@@ -22,6 +20,7 @@ html {
 *::after {
     box-sizing: border-box;
     margin: 0;
+    font-family: "Nunito", sans-serif;
 }
 
 hr {
@@ -35,11 +34,11 @@ hr {
     &__link {
         font-size: 7rem;
         color: #eef0f6;
+        text-decoration: none;
     }
 
     &__link:hover {
-        text-decoration: none;
-        color: $white;
+        color: white;
     }
 }
 
@@ -56,5 +55,47 @@ hr {
         padding-top: 3rem;
         font-size: 3rem;
         color: #eef0f6;
+    }
+}
+
+@media(max-width: 992px) {
+    .header {
+        min-height: 11rem;
+
+        &__link {
+            font-size: 5rem;
+        }
+    }
+}
+
+@media(max-width: 768px) {
+    .footer__copyright {
+        font-size: 2.5rem;
+    }
+}
+
+@media(max-width: 350px) {
+    .header {
+        min-height: 6rem;
+
+        &__link {
+            font-size: 3rem;
+        }
+    }
+
+    .title {
+        padding-top: 1rem;
+    }
+
+    hr {
+        margin: 0 4rem;
+    }
+
+    .footer {
+        min-height: 30rem;
+
+        &__copyright {
+            font-size: 2.3rem;
+        }
     }
 }

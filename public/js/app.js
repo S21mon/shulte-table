@@ -1979,46 +1979,119 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      currentNumber: 0
+      currentNumber: 0,
+      startTimer: null,
+      gameTimer: null,
+      time: '',
+      newDate: '',
+      oldDate: '',
+      isStarted: false,
+      isActive: false,
+      numbers: []
     };
   },
-  computed: {
-    increment: function increment() {
-      return this.currentNumber++;
+  mounted: function mounted() {
+    var _this = this;
+
+    this._fillTable();
+
+    this.startTimer = setInterval(function () {
+      _this.numbers.length = 0;
+
+      _this._fillTable();
+    }, 1000);
+  },
+  methods: {
+    startGame: function startGame() {
+      if (this.isStarted) {
+        return 0;
+      }
+
+      this.isActive = true;
+      this.isStarted = true;
+
+      this._setDefaultValue();
+
+      this._createInterval();
+
+      this._fillTable();
     },
-    statusCompleted: function statusCompleted() {
-      return this.$store.state.isCompleted;
+    _setDefaultValue: function _setDefaultValue() {
+      this.numbers.length = 0;
+      this.currentNumber = 1;
+      clearInterval(this.startTimer);
+
+      if (this.$store.state.isCompletedGame === true) {
+        this.$store.dispatch('changeStatusCompleted');
+      }
+    },
+    _createInterval: function _createInterval() {
+      this.oldDate = new Date();
+      clearInterval(this.gameTimer);
+      this.gameTimer = setInterval(this._calculateDate, 100);
+    },
+    _calculateDate: function _calculateDate() {
+      this.newDate = new Date() - this.oldDate;
+
+      this._convertDate();
+    },
+    _convertDate: function _convertDate() {
+      var milSec = Math.abs(Math.floor(this.newDate / 100) % 10);
+      var sec = Math.abs(Math.floor(this.newDate / 1000) % 60);
+      var min = Math.abs(Math.floor(this.newDate / 1000 / 60) % 60);
+      var hours = Math.abs(Math.floor(this.newDate / 1000 / 60 / 60) % 24);
+      sec = this._checkBitness(sec);
+      min = this._checkBitness(min);
+      hours = this._checkBitness(hours);
+      this.time = hours + ':' + min + ':' + sec + '.' + milSec;
+    },
+    _checkBitness: function _checkBitness(number) {
+      if (number.toString().length === 1) {
+        return number = '0' + number;
+      }
+    },
+    _fillTable: function _fillTable() {
+      var columnQty = this.$store.state.columnQty;
+      var rowQty = this.$store.state.rowQty;
+
+      for (var i = 0; i < columnQty * rowQty; i++) {
+        this.numbers.push(i + 1);
+      }
+
+      this._mixNumbers();
+    },
+    _mixNumbers: function _mixNumbers() {
+      for (var i = this.numbers.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var _ref = [this.numbers[j], this.numbers[i]];
+        this.numbers[i] = _ref[0];
+        this.numbers[j] = _ref[1];
+      }
+    },
+    pickNumber: function pickNumber(number) {
+      if (this.isStarted) {
+        if (number === this.currentNumber) {
+          this._checkCompletedGame();
+        }
+      }
+    },
+    _checkCompletedGame: function _checkCompletedGame() {
+      var columnQty = this.$store.state.columnQty;
+      var rowQty = this.$store.state.rowQty;
+
+      if (this.currentNumber === rowQty * columnQty) {
+        this.stopGame();
+        this.$store.dispatch('changeStatusCompleted');
+      } else {
+        this.currentNumber++;
+      }
+    },
+    stopGame: function stopGame() {
+      this.isStarted = false;
+      clearInterval(this.gameTimer);
     }
   }
 });
@@ -2071,7 +2144,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      isHiddenList: false
+    };
+  },
+  methods: {
+    changeListVisible: function changeListVisible() {
+      this.isHiddenList = !this.isHiddenList;
+    }
+  },
+  computed: {
+    listVisible: function listVisible() {
+      return this.isHiddenList;
+    }
+  }
+});
 
 /***/ }),
 
@@ -6557,7 +6655,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".main {\n  min-height: 50rem;\n}\n.container {\n  padding: 0 20rem;\n  text-align: center;\n}", ""]);
+exports.push([module.i, ".main {\n  min-height: 50rem;\n}\n.container {\n  padding: 0 20rem;\n  text-align: center;\n}\n@media (max-width: 992px) {\n.container {\n    padding: 0 5rem;\n}\n}\n@media (max-width: 350px) {\n.container {\n    padding: 0;\n}\n}", ""]);
 
 // exports
 
@@ -6576,7 +6674,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".game[data-v-3a2c79dd] {\n  margin-bottom: 2rem;\n}\n.title[data-v-3a2c79dd] {\n  font-size: 5rem;\n}\n.game-buttons[data-v-3a2c79dd] {\n  display: flex;\n  justify-content: space-around;\n  margin-top: 4rem;\n}\n.game-buttons__button[data-v-3a2c79dd] {\n  padding: 1.5rem 3.3rem;\n  border-radius: 3.2rem;\n  font-size: 2rem;\n  text-decoration: none;\n  cursor: pointer;\n  transition: all 0.5s;\n  color: #eef0f6;\n  background-color: #094d74;\n}\n.game-buttons__button[data-v-3a2c79dd]:hover {\n  transform: scale(1.1);\n}\n.game-buttons__button[data-v-3a2c79dd]:active {\n  position: relative;\n  top: 1px;\n}\n.timer[data-v-3a2c79dd] {\n  margin-top: 4rem;\n  font-size: 4rem;\n}\n.timer__value[data-v-3a2c79dd] {\n  font-weight: bold;\n}\n.shulte-table[data-v-3a2c79dd] {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 2rem;\n  align-items: center;\n}\n.shulte-table__current-number[data-v-3a2c79dd] {\n  font-size: 5rem;\n  font-weight: bold;\n}\n.shulte-table .table[data-v-3a2c79dd] {\n  width: 70%;\n  font-size: 5rem;\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n.shulte-table .table td[data-v-3a2c79dd] {\n  border: 2px solid #333;\n  padding: 4px;\n  text-align: center;\n}\n.result[data-v-3a2c79dd] {\n  margin: 3rem 0;\n  font-size: 4rem;\n  font-weight: bold;\n}\n.result__text[data-v-3a2c79dd] {\n  font-size: 3rem;\n}", ""]);
+exports.push([module.i, ".container[data-v-3a2c79dd] {\n  padding: 0 15rem;\n}\n.game[data-v-3a2c79dd] {\n  margin-bottom: 2rem;\n}\n.title[data-v-3a2c79dd] {\n  font-size: 5rem;\n}\n.game-buttons[data-v-3a2c79dd] {\n  display: flex;\n  justify-content: space-around;\n  margin-top: 4rem;\n}\n.game-buttons__button[data-v-3a2c79dd] {\n  padding: 2.5rem 4.3rem;\n  border-radius: 3.2rem;\n  font-size: 2rem;\n  text-decoration: none;\n  cursor: pointer;\n  transition: all 0.5s;\n  color: #eef0f6;\n  background-color: #094d74;\n}\n.game-buttons__button[data-v-3a2c79dd]:hover {\n  transform: scale(1.1);\n}\n.game-buttons__button[data-v-3a2c79dd]:active {\n  position: relative;\n  top: 1px;\n}\n.timer[data-v-3a2c79dd] {\n  margin-top: 4rem;\n  font-size: 4rem;\n}\n.timer__value[data-v-3a2c79dd] {\n  font-weight: bold;\n}\n.shulte-table[data-v-3a2c79dd] {\n  display: flex;\n  justify-content: center;\n  margin-top: 3rem;\n  align-items: center;\n}\n.shulte-table__current-number[data-v-3a2c79dd] {\n  margin: 0 7rem;\n  font-size: 5rem;\n  font-weight: bold;\n}\n.shulte-table .table[data-v-3a2c79dd] {\n  width: 70rem;\n  height: 60rem;\n  font-size: 5rem;\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n.shulte-table .table td[data-v-3a2c79dd] {\n  border: 2px solid #333;\n  text-align: center;\n  cursor: pointer;\n}\n.result[data-v-3a2c79dd] {\n  margin: 3rem 0;\n  font-size: 4rem;\n  font-weight: bold;\n}\n.result__text[data-v-3a2c79dd] {\n  font-size: 3rem;\n}\n@media (max-width: 1200px) {\n.shulte-table .table[data-v-3a2c79dd] {\n    width: 50rem;\n    height: 50rem;\n}\n}\n@media (max-width: 992px) {\n.shulte-table .table[data-v-3a2c79dd] {\n    width: 40rem;\n    height: 40rem;\n}\n.game-buttons__button[data-v-3a2c79dd] {\n    padding: 1.8rem 3.2rem;\n}\n}\n@media (max-width: 768px) {\n.container[data-v-3a2c79dd] {\n    padding: 0;\n}\n.title[data-v-3a2c79dd] {\n    font-size: 3rem;\n}\n.game-buttons__button[data-v-3a2c79dd] {\n    padding: 1.5rem 2.3rem;\n}\n.timer[data-v-3a2c79dd] {\n    font-size: 3rem;\n}\n.shulte-table .table[data-v-3a2c79dd] {\n    width: 30rem;\n    height: 30rem;\n    font-size: 3rem;\n}\n.shulte-table__current-number[data-v-3a2c79dd] {\n    font-size: 3rem;\n}\n.result[data-v-3a2c79dd] {\n    font-size: 3rem;\n}\n.result__text[data-v-3a2c79dd] {\n    font-size: 2.5rem;\n}\n}\n@media (max-width: 350px) {\n.title[data-v-3a2c79dd] {\n    font-size: 2.5rem;\n}\n.game-buttons[data-v-3a2c79dd] {\n    margin-top: 2rem;\n}\n.game-buttons__button[data-v-3a2c79dd] {\n    padding: 1rem 2rem;\n    font-size: 1.5rem;\n}\n.timer[data-v-3a2c79dd] {\n    font-size: 2rem;\n}\n.shulte-table[data-v-3a2c79dd] {\n    flex-direction: column;\n    margin-top: 4.5rem;\n}\n.shulte-table__current-number[data-v-3a2c79dd] {\n    padding: 1rem 0;\n    font-size: 2rem;\n}\n.shulte-table .table[data-v-3a2c79dd] {\n    width: 25rem;\n    height: 25rem;\n}\n.result[data-v-3a2c79dd] {\n    margin: 5rem;\n    font-size: 2rem;\n}\n.result__text[data-v-3a2c79dd] {\n    font-size: 1.5rem;\n}\n}", ""]);
 
 // exports
 
@@ -6595,7 +6693,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Nunito);", ""]);
 
 // module
-exports.push([module.i, ".title[data-v-f2b6376c] {\n  margin-top: 1rem;\n  font-size: 3rem;\n  font-weight: bold;\n}\n.info-game[data-v-f2b6376c] {\n  margin-top: 3rem;\n}\n.info-game .desc[data-v-f2b6376c] {\n  font-size: 2.5rem;\n}\n.rules[data-v-f2b6376c] {\n  margin-top: 3rem;\n}\n.rules__title[data-v-f2b6376c] {\n  font-size: 3rem;\n  font-weight: bold;\n}\n.rules-list[data-v-f2b6376c] {\n  list-style-type: circle;\n  font-size: 2.5rem;\n}\n.rules-list .rule[data-v-f2b6376c] {\n  margin-top: 1rem;\n}", ""]);
+exports.push([module.i, ".title[data-v-f2b6376c] {\n  margin-top: 1rem;\n  font-size: 3rem;\n  font-weight: bold;\n}\n.info-game[data-v-f2b6376c] {\n  margin-top: 3rem;\n}\n.info-game .desc[data-v-f2b6376c] {\n  font-size: 2.5rem;\n}\n.rules[data-v-f2b6376c] {\n  margin-top: 3rem;\n}\n.rules .title__text[data-v-f2b6376c] {\n  display: inline-block;\n  vertical-align: middle;\n  font-size: 3rem;\n  font-weight: bold;\n}\n.rules .title__img[data-v-f2b6376c] {\n  display: inline-block;\n  width: 2rem;\n  height: 2rem;\n  vertical-align: middle;\n  cursor: pointer;\n}\n.rules .title__img[data-v-f2b6376c]:active {\n  transform: scale(1.5);\n}\n.rules-list[data-v-f2b6376c] {\n  padding: 2rem 0;\n  list-style: none;\n  counter-reset: li;\n}\n.rules-list .rule[data-v-f2b6376c] {\n  position: relative;\n  margin: 2.5rem 4rem;\n  padding: 0 2rem 0 2.8rem;\n  font-size: 2.5rem;\n  transition-duration: 0.3s;\n}\n.rules-list .rule[data-v-f2b6376c]:before {\n  content: counter(li);\n  position: absolute;\n  top: 0;\n  left: -3rem;\n  width: 4.2rem;\n  box-sizing: border-box;\n  border: 0.6rem solid transparent;\n  text-align: center;\n  font-size: 1.3rem;\n  font-weight: bold;\n  line-height: 3rem;\n  counter-increment: li;\n  color: #094d74;\n  transition-duration: 0.3s;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n}\n.rules-list .rule[data-v-f2b6376c]:after {\n  content: \"\";\n  position: absolute;\n  top: 0;\n  left: -3rem;\n  width: 4.2rem;\n  height: 4.2rem;\n  box-sizing: border-box;\n  border: 0.6rem solid #D8F1FF;\n  border-radius: 50%;\n  opacity: 0.5;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n}\n.rules-list .rule[data-v-f2b6376c]:hover:after {\n  -webkit-animation: 0.5s ease-in-out bounceIn-data-v-f2b6376c;\n          animation: 0.5s ease-in-out bounceIn-data-v-f2b6376c;\n  opacity: 1;\n  border: 0.6rem solid #094d74;\n}\n.rotate-img[data-v-f2b6376c] {\n  transition: all 1s;\n  transform: rotate(180deg);\n}\n@-webkit-keyframes bounceIn-data-v-f2b6376c {\n0% {\n    opacity: 0;\n    transform: scale3d(0.3, 0.3, 0.3);\n}\n20% {\n    transform: scale3d(1.3, 1.3, 1.3);\n}\n40% {\n    transform: scale3d(0.9, 0.9, 0.9);\n}\n60% {\n    opacity: 1;\n    transform: scale3d(1.03, 1.03, 1.03);\n}\n80% {\n    transform: scale3d(0.97, 0.97, 0.97);\n}\nto {\n    opacity: 1;\n    transform: scale3d(1, 1, 1);\n}\n}\n@keyframes bounceIn-data-v-f2b6376c {\n0% {\n    opacity: 0;\n    transform: scale3d(0.3, 0.3, 0.3);\n}\n20% {\n    transform: scale3d(1.3, 1.3, 1.3);\n}\n40% {\n    transform: scale3d(0.9, 0.9, 0.9);\n}\n60% {\n    opacity: 1;\n    transform: scale3d(1.03, 1.03, 1.03);\n}\n80% {\n    transform: scale3d(0.97, 0.97, 0.97);\n}\nto {\n    opacity: 1;\n    transform: scale3d(1, 1, 1);\n}\n}\n.visible-enter-active[data-v-f2b6376c], .visible-leave-active[data-v-f2b6376c] {\n  transition: opacity 1.5s;\n}\n.visible-leave-active[data-v-f2b6376c] {\n  transition: 1s;\n}\n.visible-enter[data-v-f2b6376c], .visible-leave-to[data-v-f2b6376c] {\n  opacity: 0;\n}\n@media (max-width: 1200px) {\n.container[data-v-f2b6376c] {\n    padding: 0 13rem;\n}\n.info-game .desc[data-v-f2b6376c] {\n    font-size: 2rem;\n}\n.rules .title__text[data-v-f2b6376c] {\n    font-size: 3rem;\n}\n.rules-list .rule[data-v-f2b6376c] {\n    font-size: 2rem;\n}\n}\n@media (max-width: 768px) {\n.container[data-v-f2b6376c] {\n    padding: 0;\n}\n}\n@media (max-width: 350px) {\n.title[data-v-f2b6376c] {\n    font-size: 2rem;\n}\n.info-game .desc[data-v-f2b6376c] {\n    font-size: 1.5rem;\n}\n.rules .title__text[data-v-f2b6376c] {\n    font-size: 2rem;\n}\n.rules .title__img[data-v-f2b6376c] {\n    width: 1.6rem;\n    height: 1.6rem;\n}\n.rules-list .rule[data-v-f2b6376c] {\n    font-size: 1.5rem;\n}\n}", ""]);
 
 // exports
 
@@ -6614,7 +6712,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".navigation[data-v-d456e682] {\n  min-height: 10rem;\n  padding-top: 2.5rem;\n  background-color: #D8F1FF;\n}\n.menu[data-v-d456e682] {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  padding-bottom: 2rem;\n}\n.page[data-v-d456e682] {\n  text-align: center;\n  font-size: 3rem;\n}\n.page__link[data-v-d456e682] {\n  position: relative;\n  text-decoration: none;\n}\n.page__link[data-v-d456e682]:after {\n  content: \"\";\n  position: absolute;\n  height: 2px;\n  background-color: #3490dc;\n  width: 0;\n  left: 50%;\n  bottom: 0;\n  transform: translateX(-50%);\n  transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) all;\n}\n.page__link[data-v-d456e682]:hover:after {\n  width: 100%;\n}\n.active-page[data-v-d456e682] {\n  color: #022d43;\n}\n.active-page[data-v-d456e682]:after {\n  content: \"\";\n  position: absolute;\n  height: 2px;\n  background-color: #3490dc;\n  width: 0;\n  left: 50%;\n  bottom: 0;\n  transform: translateX(-50%);\n  transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) all;\n  width: 100%;\n}", ""]);
+exports.push([module.i, ".navigation[data-v-d456e682] {\n  min-height: 10rem;\n  padding-top: 2.5rem;\n  background-color: #D8F1FF;\n}\n.menu[data-v-d456e682] {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  padding-bottom: 2rem;\n}\n.page[data-v-d456e682] {\n  text-align: center;\n  font-size: 3rem;\n}\n.page__link[data-v-d456e682] {\n  position: relative;\n  text-decoration: none;\n}\n.page__link[data-v-d456e682]:active {\n  color: #022d43;\n}\n.page__link[data-v-d456e682]:after {\n  content: \"\";\n  position: absolute;\n  height: 2px;\n  background-color: #3490dc;\n  width: 0;\n  left: 50%;\n  bottom: 0;\n  transform: translateX(-50%);\n  transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) all;\n}\n.page__link[data-v-d456e682]:hover:after {\n  width: 100%;\n}\n.active-page[data-v-d456e682] {\n  color: #022d43;\n}\n.active-page[data-v-d456e682]:after {\n  content: \"\";\n  position: absolute;\n  height: 2px;\n  background-color: #3490dc;\n  width: 0;\n  left: 50%;\n  bottom: 0;\n  transform: translateX(-50%);\n  transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) all;\n  width: 100%;\n}\n@media (max-width: 768px) {\n.container[data-v-d456e682] {\n    padding: 0;\n}\n}\n@media (max-width: 350px) {\n.navigation[data-v-d456e682] {\n    min-height: 4rem;\n    padding-top: 1.5rem;\n}\n.menu[data-v-d456e682] {\n    display: flex;\n    justify-content: center;\n    flex-direction: column;\n}\n.page[data-v-d456e682] {\n    font-size: 2rem;\n}\n}", ""]);
 
 // exports
 
@@ -6633,7 +6731,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".container[data-v-d884f594] {\n  padding: 0 15rem;\n}\n.actions[data-v-d884f594] {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  padding-top: 10rem;\n}\n.action__desc[data-v-d884f594] {\n  font-size: 2.5rem;\n  color: #022d43;\n}\n.action__button[data-v-d884f594] {\n  display: inline-block;\n  margin-top: 2.5rem;\n  padding: 1.5rem 3.3rem;\n  border-radius: 3.2rem;\n  font-size: 2rem;\n  text-decoration: none;\n  cursor: pointer;\n  transition: all 0.5s;\n  color: #eef0f6;\n  background-color: #094d74;\n}\n.action__button[data-v-d884f594]:hover {\n  box-shadow: 0 0 1rem 0.5rem rgba(0, 0, 0, 0.24);\n  color: white;\n}\n.action__button[data-v-d884f594]:active {\n  position: relative;\n  top: 2px;\n}", ""]);
+exports.push([module.i, ".container[data-v-d884f594] {\n  padding: 0 15rem;\n}\n.actions[data-v-d884f594] {\n  display: grid;\n  grid-template-columns: repeat(2, auto);\n  grid-gap: 2rem;\n  padding-top: 10rem;\n}\n.action[data-v-d884f594] {\n  display: grid;\n  grid-template-rows: repeat(2, 1fr);\n}\n.action__desc[data-v-d884f594] {\n  font-size: 2.5rem;\n  color: #022d43;\n}\n.action__button[data-v-d884f594] {\n  justify-self: center;\n  width: 40%;\n  height: 70%;\n  margin-top: 2.5rem;\n  padding: 2.5rem 4.3rem;\n  border-radius: 3.2rem;\n  font-size: 2rem;\n  text-decoration: none;\n  cursor: pointer;\n  transition: all 0.5s;\n  color: #eef0f6;\n  background-color: #094d74;\n}\n.action__button[data-v-d884f594]:hover {\n  box-shadow: 0 0 1rem 0.5rem rgba(0, 0, 0, 0.24);\n  color: white;\n}\n.action__button[data-v-d884f594]:active {\n  position: relative;\n  top: 2px;\n}\n@media (max-width: 1200px) {\n.action__button[data-v-d884f594] {\n    height: 60%;\n    width: 60%;\n    padding: 1.8rem 3.3rem;\n}\n}\n@media (max-width: 992px) {\n.container[data-v-d884f594] {\n    padding: 0 8rem;\n}\n.action__button[data-v-d884f594] {\n    width: 80%;\n}\n}\n@media (max-width: 768px) {\n.action__button[data-v-d884f594], .action__desc[data-v-d884f594] {\n    font-size: 2rem;\n}\n.action__button[data-v-d884f594] {\n    height: 65%;\n    width: 65%;\n    padding: 1.5rem 2.3rem;\n}\n}\n@media (max-width: 350px) {\n.container[data-v-d884f594] {\n    padding: 0;\n}\n.actions[data-v-d884f594] {\n    display: flex;\n    justify-content: center;\n    flex-direction: column;\n    padding-top: 5rem;\n}\n.action[data-v-d884f594]:not(:first-child) {\n    margin-top: 6rem;\n}\n.action[data-v-d884f594] {\n    grid-gap: 2rem;\n}\n.action__button[data-v-d884f594] {\n    height: 100%;\n    margin: 0;\n    align-self: start;\n}\n.action__desc[data-v-d884f594] {\n    font-size: 1.7rem;\n}\n}", ""]);
 
 // exports
 
@@ -38587,23 +38685,100 @@ var render = function() {
           _vm._v("\n                Таблица Шульте\n            ")
         ]),
         _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
-        _vm._m(1),
-        _vm._v(" "),
-        _c("div", { staticClass: "shulte-table" }, [
-          _c("div", { staticClass: "shulte-table__current-number" }, [
-            _vm._v(_vm._s(_vm.increment))
-          ]),
+        _c("div", { staticClass: "game-buttons" }, [
+          _c(
+            "div",
+            {
+              staticClass: "game-buttons__button",
+              on: { click: _vm.startGame }
+            },
+            [_vm._v("Начать")]
+          ),
           _vm._v(" "),
-          _vm._m(2),
-          _vm._v(" "),
-          _c("div", { staticClass: "shulte-table__current-number" }, [
-            _vm._v(_vm._s(_vm.increment))
-          ])
+          _c(
+            "div",
+            {
+              staticClass: "game-buttons__button",
+              on: { click: _vm.stopGame }
+            },
+            [_vm._v("Закончить")]
+          )
         ]),
         _vm._v(" "),
-        _vm.statusCompleted
+        _vm.isActive
+          ? _c("div", { staticClass: "timer" }, [
+              _c("div", { staticClass: "timer__description" }, [
+                _vm._v("Время прохождения:")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "timer__value" }, [
+                _vm._v(_vm._s(_vm.time))
+              ])
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        !_vm.$store.state.isCompletedGame
+          ? _c("div", { staticClass: "shulte-table" }, [
+              _vm.isActive
+                ? _c("div", { staticClass: "shulte-table__current-number" }, [
+                    _vm._v(_vm._s(_vm.currentNumber))
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _c("table", { staticClass: "table" }, [
+                _c(
+                  "tbody",
+                  { staticClass: "table-body" },
+                  _vm._l(_vm.$store.state.rowQty, function(row) {
+                    return _c(
+                      "tr",
+                      _vm._l(_vm.$store.state.columnQty, function(column) {
+                        return _c(
+                          "td",
+                          {
+                            on: {
+                              click: function($event) {
+                                _vm.pickNumber(
+                                  _vm.numbers[
+                                    column +
+                                      _vm.$store.state.columnQty * (row - 1) -
+                                      1
+                                  ]
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  _vm.numbers[
+                                    column +
+                                      _vm.$store.state.columnQty * (row - 1) -
+                                      1
+                                  ]
+                                ) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      }),
+                      0
+                    )
+                  }),
+                  0
+                )
+              ]),
+              _vm._v(" "),
+              _vm.isActive
+                ? _c("div", { staticClass: "shulte-table__current-number" }, [
+                    _vm._v(_vm._s(_vm.currentNumber))
+                  ])
+                : _vm._e()
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.$store.state.isCompletedGame
           ? _c("div", { staticClass: "result" }, [
               _c("div", { staticClass: "result__title" }, [
                 _vm._v("\n                    Поздравляем!\n                ")
@@ -38611,7 +38786,7 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "result__text" }, [
                 _vm._v(
-                  "\n                    Вы успешно выполнили таблицу Шульте.\n                "
+                  "\n                    Вы успешно завершили выполнение таблицы Шульте.\n                "
                 )
               ])
             ])
@@ -38620,98 +38795,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "game-buttons" }, [
-      _c("div", { staticClass: "game-buttons__button" }, [_vm._v("Начать")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "game-buttons__button" }, [_vm._v("Закончить")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "timer" }, [
-      _c("div", { staticClass: "timer__description" }, [
-        _vm._v("Время прохождения:")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "timer__value" }, [_vm._v("00:00:00.0")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("table", { staticClass: "table" }, [
-      _c("tbody", { staticClass: "table-body" }, [
-        _c("tr", [
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("4")])
-        ]),
-        _vm._v(" "),
-        _c("tr", [
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("4")])
-        ]),
-        _vm._v(" "),
-        _c("tr", [
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("4")])
-        ]),
-        _vm._v(" "),
-        _c("tr", [
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("4")])
-        ]),
-        _vm._v(" "),
-        _c("tr", [
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("5")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("4")])
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -38733,68 +38817,84 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("section", { staticClass: "home" }, [
-        _c("div", { staticClass: "container" }, [
-          _c("div", { staticClass: "title" }, [
+  return _c("div", [
+    _c("section", { staticClass: "home" }, [
+      _c("div", { staticClass: "container" }, [
+        _c("div", { staticClass: "title" }, [
+          _vm._v(
+            "\n                Для чего нужна таблица Шульте?\n            "
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "info-game" }, [
+          _c("div", { staticClass: "desc" }, [
             _vm._v(
-              "\n                Для чего нужна таблица Шульте?\n            "
+              "\n                    Таблицы Шу́льте (англ. Schulte Table) — таблицы со случайно расположенными объектами (обычно числами или буквами), служащие для проверки и развития быстроты нахождения этих объектов в определённом порядке. Упражнения с таблицами позволяют улучшить периферическое зрительное восприятие, что важно, например, для скорочтения.\n                "
             )
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "info-game" }, [
-            _c("div", { staticClass: "desc" }, [
-              _vm._v(
-                "\n                    Таблицы Шу́льте (англ. Schulte Table) — таблицы со случайно расположенными объектами (обычно числами или буквами), служащие для проверки и развития быстроты нахождения этих объектов в определённом порядке. Упражнения с таблицами позволяют улучшить периферическое зрительное восприятие, что важно, например, для скорочтения.\n                "
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "rules" }, [
-              _c("div", { staticClass: "rules__title" }, [
-                _vm._v(
-                  "\n                        Как пользоваться таблицей?\n                    "
-                )
+          _c(
+            "div",
+            { staticClass: "rules" },
+            [
+              _c("div", { staticClass: "title" }, [
+                _c("div", { staticClass: "title__text" }, [
+                  _vm._v("Как пользоваться таблицей?")
+                ]),
+                _vm._v(" "),
+                _c("img", {
+                  staticClass: "title__img",
+                  class: { "rotate-img": _vm.listVisible },
+                  attrs: {
+                    src: __webpack_require__(/*! ../../icons/listArrow.png */ "./resources/icons/listArrow.png"),
+                    alt: "arrow"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.changeListVisible()
+                    }
+                  }
+                })
               ]),
               _vm._v(" "),
-              _c("ul", { staticClass: "rules-list" }, [
-                _c("li", { staticClass: "rule" }, [
-                  _vm._v(
-                    "\n                            Перед началом работы с таблицей взгляд фиксируется в ее центре, чтобы охватывать всю таблицу целиком.\n                        "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("li", { staticClass: "rule" }, [
-                  _vm._v(
-                    "\n                            Выбирать цифру требуется кликом мышки по нужной области таблицы.\n                        "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("li", { staticClass: "rule" }, [
-                  _vm._v(
-                    "\n                            При поиске цифр разрешается фиксация глаз в центре таблицы.\n                            Горизонтальные движения глаз запрещены.\n                        "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("li", { staticClass: "rule" }, [
-                  _vm._v(
-                    "\n                            И самое главное - время тренировки нужно выбирать так, чтобы не переутомляться.\n                        "
-                  )
-                ])
+              _c("transition", { attrs: { name: "visible" } }, [
+                _vm.listVisible
+                  ? _c("ul", { staticClass: "rules-list" }, [
+                      _c("li", { staticClass: "rule" }, [
+                        _vm._v(
+                          "\n                                Перед началом работы с таблицей взгляд фиксируется в ее центре, чтобы охватывать всю таблицу целиком.\n                            "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "rule" }, [
+                        _vm._v(
+                          "\n                                Выбирать цифру требуется кликом мышки по нужной области таблицы.\n                            "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "rule" }, [
+                        _vm._v(
+                          "\n                                При поиске цифр разрешается фиксация глаз в центре таблицы.\n                                Горизонтальные движения глаз запрещены.\n                            "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "rule" }, [
+                        _vm._v(
+                          "\n                                И самое главное - время тренировки нужно выбирать так, чтобы не переутомляться.\n                            "
+                        )
+                      ])
+                    ])
+                  : _vm._e()
               ])
-            ])
-          ])
+            ],
+            1
+          )
         ])
       ])
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -55467,6 +55567,17 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./resources/icons/listArrow.png":
+/*!***************************************!*\
+  !*** ./resources/icons/listArrow.png ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/listArrow.png?9fb4065e20635320c16ec9bc45252743";
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -55479,17 +55590,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _components_App__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/App */ "./resources/js/components/App.vue");
-/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./store */ "./resources/js/store.js");
+/* harmony import */ var _components_App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/App */ "./resources/js/components/App.vue");
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./store */ "./resources/js/store.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
-
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__["default"]);
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
 
@@ -55497,10 +55605,10 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
   components: {
-    App: _components_App__WEBPACK_IMPORTED_MODULE_3__["default"]
+    App: _components_App__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  router: _routes__WEBPACK_IMPORTED_MODULE_4__["default"],
-  store: _store__WEBPACK_IMPORTED_MODULE_5__["default"]
+  router: _routes__WEBPACK_IMPORTED_MODULE_3__["default"],
+  store: _store__WEBPACK_IMPORTED_MODULE_4__["default"]
 });
 
 /***/ }),
@@ -56015,12 +56123,33 @@ var routes = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
     isAuth: false,
-    isCompleted: false
+    isCompletedGame: false,
+    rowQty: 5,
+    columnQty: 5
   },
-  getters: {},
+  getters: {
+    isAuth: function isAuth(state) {
+      return state.isAuth;
+    },
+    isCompletedGame: function isCompletedGame(state) {
+      return state.isCompletedGame;
+    },
+    rowQty: function rowQty(state) {
+      return state.rowQty;
+    },
+    columnQty: function columnQty(state) {
+      return state.columnQty;
+    }
+  },
   actions: {
     changeStatusAuth: function changeStatusAuth(context) {
       context.commit('changeStatusAuth');
@@ -56034,10 +56163,11 @@ __webpack_require__.r(__webpack_exports__);
       return state.isAuth = !state.isAuth;
     },
     changeStatusCompleted: function changeStatusCompleted(state) {
-      return state.isCompleted = !state.isCompleted;
+      return state.isCompletedGame = !state.isCompletedGame;
     }
   }
 });
+/* harmony default export */ __webpack_exports__["default"] = (store);
 
 /***/ }),
 

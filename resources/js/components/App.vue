@@ -26,4 +26,16 @@ export default {
         padding: 0 20rem;
         text-align: center;
     }
+
+    @media(max-width: 992px) {
+        .container {
+            padding: 0 5rem;
+        }
+    }
+
+    @media(max-width: 350px) {
+        .container {
+            padding: 0;
+        }
+    }
 </style>

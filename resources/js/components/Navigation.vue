@@ -42,6 +42,10 @@
             text-decoration:none;
         }
 
+        &__link:active {
+            color: #022d43;
+        }
+
         &__link:after {
             @include underline();
         }
@@ -58,5 +62,28 @@
     .active-page:after {
         @include underline();
         width: 100%;
+    }
+
+    @media(max-width: 768px) {
+        .container {
+            padding: 0;
+        }
+    }
+
+    @media(max-width: 350px) {
+        .navigation {
+            min-height: 4rem;
+            padding-top: 1.5rem;
+        }
+
+        .menu {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .page {
+            font-size: 2rem;
+        }
     }
 </style>

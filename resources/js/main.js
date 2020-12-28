@@ -7,6 +7,8 @@ let congratulationsText = document.getElementsByClassName('congratulations__text
 let shulteSection = document.getElementsByClassName('shulte')[0];
 let nextNumber = 1;
 
+let link = document.getElementsByClassName('header__link');
+
 function hideHelpNumbers() {
     for (let i = 0; i < helpNumbers.length; i++) {
         helpNumbers[i].style.display = 'none';

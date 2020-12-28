@@ -1,11 +1,31 @@
-export default {
+import Vue from 'vue';
+import Vuex from 'vuex';
+Vue.use(Vuex);
 
+const store = new Vuex.Store({
     state: {
         isAuth: false,
-        isCompleted: false,
+        isCompletedGame: false,
+        rowQty: 5,
+        columnQty: 5,
     },
 
     getters: {
+        isAuth: state => {
+            return state.isAuth;
+        },
+
+        isCompletedGame: state => {
+            return state.isCompletedGame;
+        },
+
+        rowQty: state => {
+            return state.rowQty;
+        },
+
+        columnQty: state => {
+            return state.columnQty;
+        },
     },
 
     actions: {
@@ -24,7 +44,9 @@ export default {
         },
 
         changeStatusCompleted(state) {
-            return state.isCompleted = !state.isCompleted;
+            return state.isCompletedGame = !state.isCompletedGame;
         },
     }
-}
+})
+
+export default store;

@@ -40,18 +40,24 @@ export default {
 
     .actions {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, auto);
+        grid-gap: 2rem;
         padding-top: 10rem;
     }
 
     .action {
+        display: grid;
+        grid-template-rows: repeat(2, 1fr);
+
         &__desc {
             font-size: 2.5rem;
             color: #022d43;
         }
 
         &__button {
-            display: inline-block;
+            justify-self: center;
+            width: 40%;
+            height: 70%;
             margin-top: 2.5rem;
            @include button();
         }
@@ -67,4 +73,67 @@ export default {
         }
     }
 
+    @media(max-width: 1200px) {
+        .action__button {
+            height: 60%;
+            width: 60%;
+            padding: 1.8rem 3.3rem;
+        }
+    }
+
+    @media(max-width: 992px) {
+        .container {
+            padding: 0 8rem;
+        }
+
+        .action__button {
+            width: 80%;
+        }
+    }
+
+    @media(max-width: 768px) {
+        .action{
+            &__button, &__desc {
+                font-size: 2rem;
+            }
+
+            &__button {
+                height: 65%;
+                width: 65%;
+                padding: 1.5rem 2.3rem;
+            }
+        }
+    }
+
+    @media(max-width: 350px) {
+        .container {
+            padding: 0;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            padding-top: 5rem;
+        }
+
+        .action:not(:first-child)
+        {
+            margin-top: 6rem;
+        }
+
+        .action {
+            grid-gap: 2rem;
+
+            &__button {
+                height: 100%;
+                margin: 0;
+                align-self: start;
+            }
+
+            &__desc {
+                font-size: 1.7rem;
+            }
+        }
+    }
 </style>
