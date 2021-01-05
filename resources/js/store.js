@@ -6,6 +6,8 @@ const store = new Vuex.Store({
     state: {
         isAuth: false,
         isCompletedGame: false,
+        isStarted: false,
+        isActive: false,
         rowQty: 5,
         columnQty: 5,
     },
@@ -17,6 +19,14 @@ const store = new Vuex.Store({
 
         isCompletedGame: state => {
             return state.isCompletedGame;
+        },
+
+        isStarted: state => {
+            return state.isStarted;
+        },
+
+        isActive: state => {
+            return state.isActive;
         },
 
         rowQty: state => {
@@ -36,6 +46,14 @@ const store = new Vuex.Store({
         changeStatusCompleted(context) {
             context.commit('changeStatusCompleted');
         },
+
+        changeStatusStarted(context) {
+            context.commit('changeStatusStarted');
+        },
+
+        changeStatusActive(context) {
+            context.commit('changeStatusActive');
+        },
     },
 
     mutations: {
@@ -45,6 +63,14 @@ const store = new Vuex.Store({
 
         changeStatusCompleted(state) {
             return state.isCompletedGame = !state.isCompletedGame;
+        },
+
+        changeStatusStarted(state) {
+            return state.isStarted = !state.isStarted;
+        },
+
+        changeStatusActive(state) {
+            return state.isActive = !state.isActive;
         },
     }
 })

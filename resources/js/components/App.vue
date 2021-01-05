@@ -37,5 +37,9 @@ export default {
         .container {
             padding: 0;
         }
+
+        .main {
+            padding-top: 10rem;
+        }
     }
 </style>

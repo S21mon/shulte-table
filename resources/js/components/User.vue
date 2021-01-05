@@ -2,7 +2,7 @@
     <div>
         <section class="user-info">
             <div class="container">
-                <div class="actions" v-if="!statusAuth">
+                <div class="actions" v-if="!$store.state.isAuth">
                     <div class="action">
                         <div class="action__desc">
                             Авторизуйтесь, чтобы видеть свои лучшие результаты.
@@ -23,11 +23,6 @@
 
 <script>
 export default {
-    computed: {
-        statusAuth() {
-            return this.$store.state.isAuth
-        }
-    },
 }
 </script>
 
@@ -75,7 +70,7 @@ export default {
 
     @media(max-width: 1200px) {
         .action__button {
-            height: 60%;
+            height: 70%;
             width: 60%;
             padding: 1.8rem 3.3rem;
         }

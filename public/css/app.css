@@ -1,18 +1,25 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);html {
+  height: 100%;
+  box-sizing: border-box;
   font-size: 62.5%;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
+}
+
+body {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  margin: 0;
 }
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-  margin: 0;
   font-family: "Nunito", sans-serif;
 }
 
@@ -85,7 +92,11 @@ hr {
   }
 
   .footer {
-    min-height: 30rem;
+    min-height: 20rem;
+  }
+
+  .footer .container {
+    padding-top: 5rem;
   }
 
   .footer__copyright {

@@ -30,11 +30,11 @@
     .menu {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
+        justify-items: center;
         padding-bottom: 2rem;
     }
 
     .page {
-        text-align: center;
         font-size: 3rem;
 
         &__link {
@@ -66,7 +66,11 @@
 
     @media(max-width: 768px) {
         .container {
-            padding: 0;
+            padding: 0 .5rem;
+        }
+
+        .page {
+            font-size: 2.5rem;
         }
     }
 
